@@ -1,0 +1,10 @@
+{
+  "name": "oxidmod/rest-bundle",
+  "description": "Rest bundle based on Fractal library",
+  "authors": [
+    {
+      "name": "Oxidmod",
+      "email": "oxidmod@gmail.com"
+    }
+  ]
+}
