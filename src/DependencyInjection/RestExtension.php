@@ -1,9 +1,10 @@
 <?php
 
-declare (strict_types = 1);
+declare (strict_types=1);
 
 namespace Oxidmod\RestBundle\DependencyInjection;
 
+use Oxidmod\RestBundle\Transformer\TransformerInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
@@ -25,6 +26,10 @@ class RestExtension extends Extension
         );
 
         $loader->load('services.yml');
+
+        if (method_exists($this, 'registerForAutoconfiguration')) {
+            $container->registerForAutoconfiguration(TransformerInterface::class, 'oxidmod_rest.transformer');
+        }
     }
 
     /**

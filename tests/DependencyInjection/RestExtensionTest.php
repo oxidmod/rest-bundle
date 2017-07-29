@@ -1,6 +1,6 @@
 <?php
 
-declare (strict_types = 1);
+declare (strict_types=1);
 
 namespace Oxidmod\RestBundle\Tests\DependencyInjection;
 
@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 
 /**
- * Test for RestExtensionTest
+ * Test for RestExtension
  */
 class RestExtensionTest extends TestCase
 {

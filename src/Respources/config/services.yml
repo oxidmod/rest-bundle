@@ -1,1 +1,28 @@
+parameters:
+    oxidmod_rest.json_api.base_url: '/'
+    oxidmod_rest.serializer: oxidmod_rest.serializer.json_api
+
 services:
+    oxidmod_rest.manager:
+        class: League\Fractal\Manager
+        calls:
+            - method: setSerializer
+              arguments:
+                  - "@=service(parameter('oxidmod_rest.serializer'))"
+
+    oxidmod_rest.transformer:
+        class: Oxidmod\RestBundle\Transformer\Transformer
+        arguments:
+            - []
+
+    oxidmod_rest.serializer.json_api:
+        class: League\Fractal\Serializer\JsonApiSerializer
+        arguments:
+            - '%oxidmod_rest.json_api.base_url%'
+
+    oxidmod_rest.serializer.array:
+        class: League\Fractal\Serializer\ArraySerializer
+
+    oxidmod_rest.serializer.data_array:
+        class: League\Fractal\Serializer\DataArraySerializer
+
