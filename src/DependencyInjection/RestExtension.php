@@ -26,10 +26,6 @@ class RestExtension extends Extension
         );
 
         $loader->load('services.yml');
-
-        if (method_exists($this, 'registerForAutoconfiguration')) {
-            $container->registerForAutoconfiguration(TransformerInterface::class, 'oxidmod_rest.transformer');
-        }
     }
 
     /**

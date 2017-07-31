@@ -26,3 +26,8 @@ services:
     oxidmod_rest.serializer.data_array:
         class: League\Fractal\Serializer\DataArraySerializer
 
+    oxidmod_rest.response_renderer:
+        class: Oxidmod\RestBundle\Response\ResponseRenderer
+        arguments:
+            - '@oxidmod_rest.manager'
+            - '@oxidmod_rest.transformer'
