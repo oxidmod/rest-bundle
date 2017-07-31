@@ -7,6 +7,7 @@ namespace Oxidmod\RestBundle\Tests\Response;
 use League\Fractal\Manager;
 use League\Fractal\Serializer\SerializerAbstract;
 use League\Fractal\TransformerAbstract;
+use Oxidmod\RestBundle\Response\ResponseModifier;
 use Oxidmod\RestBundle\Response\ResponseRenderer;
 use Oxidmod\RestBundle\Transformer\Exception\UnsupportedObjectException;
 use PHPUnit\Framework\TestCase;
@@ -117,9 +118,17 @@ class ResponseRendererTest extends TestCase
      */
     private function getRenderer($transformer): ResponseRenderer
     {
+        $responseModifier = $this->createMock(ResponseModifier::class);
+        $responseModifier->expects(static::any())
+            ->method('modifyResponse')
+            ->willReturnCallback(function (Response $response) {
+                return $response;
+            });
+
         return new ResponseRenderer(
             new Manager(),
-            $transformer
+            $transformer,
+            $responseModifier
         );
     }
 }
