@@ -45,4 +45,4 @@ services:
         arguments:
             - '@oxidmod_rest.manager'
             - '@oxidmod_rest.transformer'
-
+            - '@oxidmod_rest.response_modifier'
