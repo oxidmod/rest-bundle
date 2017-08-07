@@ -4,6 +4,7 @@ declare (strict_types=1);
 
 namespace Oxidmod\RestBundle;
 
+use Oxidmod\RestBundle\DependencyInjection\Compiler\RequestModifierCompilerPass;
 use Oxidmod\RestBundle\DependencyInjection\Compiler\ResponseModifierCompilerPass;
 use Oxidmod\RestBundle\DependencyInjection\Compiler\TransformerCompilerPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -22,6 +23,7 @@ class RestBundle extends Bundle
         parent::build($container);
 
         $container->addCompilerPass(new TransformerCompilerPass());
+        $container->addCompilerPass(new RequestModifierCompilerPass());
         $container->addCompilerPass(new ResponseModifierCompilerPass());
     }
 }
