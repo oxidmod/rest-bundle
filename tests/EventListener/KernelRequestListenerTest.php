@@ -52,11 +52,4 @@ class KernelRequestListenerTest extends TestCase
 
         parent::setUp();
     }
-
-    protected function assertPreConditions()
-    {
-        static::assertInstanceOf(EventSubscriberInterface::class, $this->subscriber);
-
-        parent::assertPreConditions();
-    }
 }
