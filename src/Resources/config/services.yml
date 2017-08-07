@@ -27,6 +27,16 @@ services:
     oxidmod_rest.serializer.data_array:
         class: League\Fractal\Serializer\DataArraySerializer
 
+    oxidmod_rest.request_modifier:
+        class: Oxidmod\RestBundle\Request\RequestModifier
+        arguments:
+            - []
+
+    oxidmod_rest.request_modifier.json_request_modifier:
+        class: Oxidmod\RestBundle\Request\Modifier\JsonRequestModifier
+        tags:
+            - { name: oxidmod_rest.request_modifier }
+
     oxidmod_rest.response_modifier:
         class: Oxidmod\RestBundle\Response\ResponseModifier
         arguments:
