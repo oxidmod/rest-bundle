@@ -13,7 +13,8 @@ interface RequestModifierInterface
 {
     /**
      * @param Request $request
-     * @return Request
+     *
+     * @return void
      */
-    public function modify(Request $request): Request;
+    public function modify(Request $request);
 }

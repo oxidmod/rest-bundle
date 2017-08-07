@@ -28,14 +28,18 @@ class RequestModifierTest extends TestCase
     {
         $request = new Request();
 
-        $modifiedRequest = $request->duplicate([], ['test' => 'val']);
-
         $this->customModifier->expects(static::once())
             ->method('modify')
             ->with($request)
-            ->willReturn($modifiedRequest);
+            ->willReturnCallback(function (Request $request) {
+                $request->request->replace(['test' => 'val']);
 
-        static::assertSame($modifiedRequest, $this->rootModifier->modifyRequest($request));
+                return;
+            });
+
+        $this->rootModifier->modifyRequest($request);
+
+        static::assertSame(['test' => 'val'], $request->request->all());
     }
 
     protected function setUp()

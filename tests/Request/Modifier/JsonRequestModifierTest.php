@@ -27,10 +27,9 @@ class JsonRequestModifierTest extends TestCase
      */
     public function testNotJsonRequest(Request $request, array $expectedRequest)
     {
-        $result = $this->modifier->modify($request);
+        $this->modifier->modify($request);
 
-        static::assertSame($request, $result);
-        static::assertSame($expectedRequest, $result->request->all());
+        static::assertSame($expectedRequest, $request->request->all());
     }
 
     public function providerForTestNotJsonRequest(): array
@@ -51,10 +50,9 @@ class JsonRequestModifierTest extends TestCase
     {
         $request = new Request([],[],[],[],[],['HTTP_CONTENT_TYPE' => $contentType], $content);
 
-        $result = $this->modifier->modify($request);
+        $this->modifier->modify($request);
 
-        static::assertSame($request, $result);
-        static::assertSame([], $result->request->all());
+        static::assertSame([], $request->request->all());
     }
 
     public function providerForTestWithMalformedBody(): array
@@ -80,10 +78,9 @@ class JsonRequestModifierTest extends TestCase
     {
         $request = new Request([],[],[],[],[],['HTTP_CONTENT_TYPE' => $contentType], $content);
 
-        $result = $this->modifier->modify($request);
+        $this->modifier->modify($request);
 
-        static::assertNotSame($request, $result);
-        static::assertSame($expectedRequest, $result->request->all());
+        static::assertSame($expectedRequest, $request->request->all());
     }
 
     public function providerForTestModify(): array

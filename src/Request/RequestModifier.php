@@ -29,15 +29,14 @@ class RequestModifier
 
     /**
      * @param Request $request
-     * @return Request
+     *
+     * @return void
      */
-    public function modifyRequest(Request $request): Request
+    public function modifyRequest(Request $request)
     {
         foreach ($this->modifiers as $modifier) {
-            $request = $modifier->modify($request);
+            $modifier->modify($request);
         }
-
-        return $request;
     }
 
     /**

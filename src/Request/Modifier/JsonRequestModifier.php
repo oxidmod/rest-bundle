@@ -31,19 +31,19 @@ class JsonRequestModifier implements RequestModifierInterface
     /**
      * {@inheritdoc}
      */
-    public function modify(Request $request): Request
+    public function modify(Request $request)
     {
         if (!$this->supports($request)) {
-            return $request;
+            return;
         }
 
         $decodedRequestBody = json_decode($request->getContent(), true);
 
         if(empty($decodedRequestBody) || json_last_error() !== JSON_ERROR_NONE) {
-            return $request;
+            return;
         }
 
-        return $request->duplicate(null, (array) $decodedRequestBody);
+        $request->request->replace((array) $decodedRequestBody);
     }
 
     /**
