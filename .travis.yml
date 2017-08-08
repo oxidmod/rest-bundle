@@ -8,6 +8,6 @@ before_script:
   - composer install
 
 script:
-  - composer script test
-  - composer script cover
-  - composer script coveralls
+  - composer run-script test
+  - composer run-script cover
+  - composer run-script coveralls
