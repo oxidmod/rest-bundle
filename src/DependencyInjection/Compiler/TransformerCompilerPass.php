@@ -43,5 +43,4 @@ class TransformerCompilerPass implements CompilerPassInterface
 
         $rootTransformerDefinition->replaceArgument(0, $transformers);
     }
-
 }

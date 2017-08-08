@@ -33,7 +33,7 @@
     "test": "php ./vendor/bin/phpunit -c ./tests/phpunit.xml ./tests",
     "cover": "php ./vendor/bin/phpunit -c ./tests/phpunit.xml --coverage-clover ./var/phpunit/clover.xml ./tests",
     "coveralls": "php ./vendor/bin/coveralls -v --exclude-no-stmt",
-    "check-style": "php ./vendor/bin/phpcs -p --standard=PSR2 --runtime-set ignore_errors_on_exit 1 --runtime-set ignore_warnings_on_exit 1 src",
-    "fix-style": "php ./vendor/bin/phpcbf -p --standard=PSR2 --runtime-set ignore_errors_on_exit 1 --runtime-set ignore_warnings_on_exit 1 src"
+    "check-style": "php ./vendor/bin/phpcs -p --standard=PSR2 --runtime-set ignore_errors_on_exit 1 --runtime-set ignore_warnings_on_exit 1 ./src",
+    "fix-style": "php ./vendor/bin/phpcbf -p --standard=PSR2 --runtime-set ignore_errors_on_exit 1 --runtime-set ignore_warnings_on_exit 1 ./src"
   }
 }
