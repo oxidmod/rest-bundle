@@ -25,6 +25,12 @@
   },
   "require-dev": {
     "symfony/framework-bundle": "~3.0",
-    "phpunit/phpunit": "^6.2"
+    "phpunit/phpunit": "^6.2",
+    "satooshi/php-coveralls": "^1.0"
+  },
+  "scripts": {
+    "test": "php ./vendor/bin/phpunit -c ./tests/phpunit.xml ./tests",
+    "cover": "php ./vendor/bin/phpunit -c ./tests/phpunit.xml --coverage-clover ./var/phpunit/clover.xml ./tests",
+    "coveralls": "php ./vendor/bin/coveralls -v --exclude-no-stmt"
   }
 }
