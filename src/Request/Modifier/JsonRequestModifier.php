@@ -39,7 +39,7 @@ class JsonRequestModifier implements RequestModifierInterface
 
         $decodedRequestBody = json_decode($request->getContent(), true);
 
-        if(empty($decodedRequestBody) || json_last_error() !== JSON_ERROR_NONE) {
+        if (empty($decodedRequestBody) || json_last_error() !== JSON_ERROR_NONE) {
             return;
         }
 
