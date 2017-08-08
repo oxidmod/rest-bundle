@@ -6,8 +6,11 @@ php: [7, 7.1]
 
 before_script:
   - composer install
+  - mkdir -p ./var
 
 script:
-  - composer run-script test
   - composer run-script cover
-  - composer run-script coveralls
+  - composer run-script check-style
+
+after_script:
+  - composer coveralls

@@ -1,9 +1,9 @@
 Oxidmod REST Bundle
 =============================
 
-[![Latest Stable Version](https://poser.pugx.org/oxidmod/rest-bundle/v/stable)](https://packagist.org/packages/oxidmod/rest-bundle)
-[![Coverage Status](https://coveralls.io/repos/github/oxidmod/rest-bundle/badge.svg?branch=master)](https://coveralls.io/github/oxidmod/rest-bundle?branch=master)
-[![Total Downloads](https://poser.pugx.org/oxidmod/rest-bundle/downloads)](https://packagist.org/packages/oxidmod/rest-bundle)
+[![Latest Stable Version](https://poser.pugx.org/oxidmod/rest-bundle/v/stable?v=0.2.1)](https://packagist.org/packages/oxidmod/rest-bundle)
+[![Coverage Status](https://coveralls.io/repos/github/oxidmod/rest-bundle/badge.svg?branch=master&v=0.2.1)](https://coveralls.io/github/oxidmod/rest-bundle?branch=master)
+[![Total Downloads](https://poser.pugx.org/oxidmod/rest-bundle/downloads?v=0.2.1)](https://packagist.org/packages/oxidmod/rest-bundle)
 [![Latest Unstable Version](https://poser.pugx.org/oxidmod/rest-bundle/v/unstable)](https://packagist.org/packages/oxidmod/rest-bundle)
 [![License](https://poser.pugx.org/oxidmod/rest-bundle/license)](https://packagist.org/packages/oxidmod/rest-bundle)
 
