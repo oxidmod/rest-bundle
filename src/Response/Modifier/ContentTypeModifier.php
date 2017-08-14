@@ -15,14 +15,14 @@ class ContentTypeModifier implements ResponseModifierInterface
     /**
      * @var string
      */
-    private $responseContentType;
+    private $contentType;
 
     /**
-     * @param string $responseContentType
+     * @param string $contentType
      */
-    public function __construct(string $responseContentType)
+    public function __construct(string $contentType)
     {
-        $this->responseContentType = $responseContentType;
+        $this->contentType = $contentType;
     }
 
     /**
@@ -30,12 +30,12 @@ class ContentTypeModifier implements ResponseModifierInterface
      */
     public function modify(Response $response, Request $request): Response
     {
-        $acceptableContentTypes = $request->getAcceptableContentTypes();
+        $acceptableTypes = $request->getAcceptableContentTypes();
 
-        foreach ($acceptableContentTypes as $contentType) {
-            if ($contentType === $this->responseContentType) {
+        foreach ($acceptableTypes as $acceptableType) {
+            if ($acceptableType === $this->contentType) {
                 $clone = clone $response;
-                $clone->headers->set('Content-Type', $contentType);
+                $clone->headers->set('Content-Type', $acceptableType);
 
                 return $clone;
             }

@@ -32,15 +32,15 @@ class RequestModifierCompilerPass implements CompilerPassInterface
             return;
         }
 
-        $rootModifierDefinition = $container->getDefinition(static::MODIFIER_SERVICE_ID);
+        $definition = $container->getDefinition(static::MODIFIER_SERVICE_ID);
 
-        $taggedServices = $container->findTaggedServiceIds(static::MODIFIER_SERVICE_TAG);
+        $modifiers = array_keys($container->findTaggedServiceIds(static::MODIFIER_SERVICE_TAG));
 
-        $modifiers = [];
-        foreach ($taggedServices as $id => $tags) {
-            $modifiers[] = new Reference($id);
+        $modifiersSet = [];
+        foreach ($modifiers as $modifier) {
+            $modifiersSet[] = new Reference($modifier);
         }
 
-        $rootModifierDefinition->replaceArgument(0, $modifiers);
+        $definition->replaceArgument(0, $modifiersSet);
     }
 }
