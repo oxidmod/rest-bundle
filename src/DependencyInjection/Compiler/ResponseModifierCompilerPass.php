@@ -41,6 +41,6 @@ class ResponseModifierCompilerPass implements CompilerPassInterface
             $modifiers[] = new Reference($id);
         }
 
-        $rootModifierDefinition->replaceArgument(1, $modifiers);
+        $rootModifierDefinition->replaceArgument(0, $modifiers);
     }
 }

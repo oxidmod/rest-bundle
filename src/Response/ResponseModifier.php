@@ -5,7 +5,7 @@ declare (strict_types=1);
 namespace Oxidmod\RestBundle\Response;
 
 use Oxidmod\RestBundle\Response\Modifier\ResponseModifierInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -14,46 +14,37 @@ use Symfony\Component\HttpFoundation\Response;
 class ResponseModifier
 {
     /**
-     * @var RequestStack
-     */
-    private $requestStack;
-
-    /**
      * @var ResponseModifierInterface[]
      */
     private $modifiers;
 
     /**
-     * @param RequestStack $requestStack
      * @param ResponseModifierInterface[] $modifiers
      */
-    public function __construct(RequestStack $requestStack, array $modifiers)
+    public function __construct(array $modifiers)
     {
-        $this->requestStack = $requestStack;
-
         foreach ($modifiers as $modifier) {
             $this->addResponseModifier($modifier);
         }
     }
 
+    private function addResponseModifier(ResponseModifierInterface $modifier)
+    {
+        $this->modifiers[] = $modifier;
+    }
 
     /**
      * @param Response $response
+     * @param Request $request
+     *
      * @return Response
      */
-    public function modifyResponse(Response $response): Response
+    public function modifyResponse(Response $response, Request $request): Response
     {
-        $request = $this->requestStack->getCurrentRequest();
-
         foreach ($this->modifiers as $modifier) {
             $response = $modifier->modify($response, $request);
         }
 
         return $response;
-    }
-
-    private function addResponseModifier(ResponseModifierInterface $modifier)
-    {
-        $this->modifiers[] = $modifier;
     }
 }

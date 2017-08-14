@@ -31,8 +31,15 @@ services:
         class: Oxidmod\RestBundle\EventListener\KernelRequestListener
         arguments:
             - '@oxidmod_rest.request_modifier'
-    tags:
-        - {name: kernel.event_listener, event: kernel.request, method: onKernelRequest, priority: -255 }
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest, priority: -255 }
+
+    oxidmod_rest.event_listener.kernel_view_listener:
+        class: Oxidmod\RestBundle\EventListener\KernelResponseListener
+        arguments:
+            - '@oxidmod_rest.response_modifier'
+        tags:
+            - { name: kernel.event_listener, event: kernel.view, method: onKernelResponse, priority: -255 }
 
     oxidmod_rest.request_modifier:
         class: Oxidmod\RestBundle\Request\RequestModifier
@@ -47,7 +54,6 @@ services:
     oxidmod_rest.response_modifier:
         class: Oxidmod\RestBundle\Response\ResponseModifier
         arguments:
-            - '@request_stack'
             - []
 
     oxidmod_rest.response_modifier.content_type:
@@ -62,4 +68,3 @@ services:
         arguments:
             - '@oxidmod_rest.manager'
             - '@oxidmod_rest.transformer'
-            - '@oxidmod_rest.response_modifier'
