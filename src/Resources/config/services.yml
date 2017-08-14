@@ -1,7 +1,7 @@
 parameters:
     oxidmod_rest.json_api.base_url: '/'
-    oxidmod_rest.serializer: oxidmod_rest.serializer.json_api
-    oxidmod_rest.response_content_type: ~
+    oxidmod_rest.serializer: oxidmod_rest.serializer.data_array
+    oxidmod_rest.response_content_type: application/json
 
 services:
     oxidmod_rest.manager:

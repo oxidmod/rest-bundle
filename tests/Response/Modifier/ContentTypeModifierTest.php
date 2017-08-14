@@ -15,76 +15,44 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class ContentTypeModifierTest extends TestCase
 {
+    const HEADER_ACCEPT = 'application/json';
+
     /**
-     * @param string|null $defaultContentType
-     *
-     * @dataProvider providerForSkipModify
+     * @var ContentTypeModifier
      */
-    public function testSkipModifyingWithoutRequest(string $defaultContentType = null)
+    private $modifier;
+
+    public function testSkipModifyingIfAnotherAcceptHeader()
     {
-        $modifier = new ContentTypeModifier($defaultContentType);
-
         $response = new Response();
+        $request = new Request();
 
-        static::assertSame($response, $modifier->modify($response));
+        static::assertSame($response, $this->modifier->modify($response, $request));
         static::assertFalse($response->headers->has('Content-Type'));
     }
 
-    public function providerForSkipModify(): array
+    public function testModify()
     {
-        return [
-            [null],
-            ['Test'],
-            [ContentTypeModifier::HEADER_APPLICATION_JSON],
-            [ContentTypeModifier::HEADER_APPLICATION_JSON_API],
-        ];
-    }
-
-    /**
-     * @param string $expectedHeader
-     * @param string|null $requestHeader
-     * @param string|null $defaultContentType
-     *
-     * @dataProvider providerForTestModify
-     */
-    public function testModify(string $expectedHeader, string $requestHeader = null, string $defaultContentType = null)
-    {
-        $modifier = new ContentTypeModifier($defaultContentType);
-
         $response = new Response();
+        $request = new Request([], [], [], [], [], ['HTTP_ACCEPT' => self::HEADER_ACCEPT]);
 
-        $requestHeaders = null === $requestHeader ? [] : ['HTTP_CONTENT_TYPE' => $requestHeader];
-        $request = new Request([], [], [], [], [], $requestHeaders);
-
-        $modifiedResponse = $modifier->modify($response, $request);
+        $modifiedResponse = $this->modifier->modify($response, $request);
 
         static::assertFalse($response->headers->has('Content-Type'));
-
-        static::assertEquals($expectedHeader, $modifiedResponse->headers->get('Content-Type'));
+        static::assertEquals(self::HEADER_ACCEPT, $modifiedResponse->headers->get('Content-Type'));
     }
 
-    public function providerForTestModify(): array
+    protected function setUp()
     {
-        return [
-            [ContentTypeModifier::HEADER_APPLICATION_JSON_API, null, null],
-            [ContentTypeModifier::HEADER_APPLICATION_JSON_API, null, ContentTypeModifier::HEADER_APPLICATION_JSON_API],
-            [ContentTypeModifier::HEADER_APPLICATION_JSON, null, ContentTypeModifier::HEADER_APPLICATION_JSON],
-            ['Test', null, 'Test'],
-            [ContentTypeModifier::HEADER_APPLICATION_JSON_API, 'Test', ContentTypeModifier::HEADER_APPLICATION_JSON_API],
-            [ContentTypeModifier::HEADER_APPLICATION_JSON, 'Test', ContentTypeModifier::HEADER_APPLICATION_JSON],
-            [ContentTypeModifier::HEADER_APPLICATION_JSON, ContentTypeModifier::HEADER_APPLICATION_JSON, null],
-            [ContentTypeModifier::HEADER_APPLICATION_JSON, ContentTypeModifier::HEADER_APPLICATION_JSON, ContentTypeModifier::HEADER_APPLICATION_JSON_API],
-            [ContentTypeModifier::HEADER_APPLICATION_JSON, ContentTypeModifier::HEADER_APPLICATION_JSON, ContentTypeModifier::HEADER_APPLICATION_JSON],
-            [ContentTypeModifier::HEADER_APPLICATION_JSON_API, ContentTypeModifier::HEADER_APPLICATION_JSON_API, null],
-            [ContentTypeModifier::HEADER_APPLICATION_JSON_API, ContentTypeModifier::HEADER_APPLICATION_JSON_API, ContentTypeModifier::HEADER_APPLICATION_JSON_API],
-            [ContentTypeModifier::HEADER_APPLICATION_JSON_API, ContentTypeModifier::HEADER_APPLICATION_JSON_API, ContentTypeModifier::HEADER_APPLICATION_JSON],
-        ];
+        $this->modifier = new ContentTypeModifier(self::HEADER_ACCEPT);
+
+        parent::setUp();
     }
 
-   protected function assertPreConditions()
-   {
-       static::assertInstanceOf(ResponseModifierInterface::class, new ContentTypeModifier());
+    protected function assertPreConditions()
+    {
+        static::assertInstanceOf(ResponseModifierInterface::class, $this->modifier);
 
-       parent::assertPreConditions();
-   }
+        parent::assertPreConditions();
+    }
 }

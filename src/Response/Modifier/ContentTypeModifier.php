@@ -12,42 +12,35 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class ContentTypeModifier implements ResponseModifierInterface
 {
-    const HEADER_APPLICATION_JSON = 'application/json';
-    const HEADER_APPLICATION_JSON_API = 'application/vnd.api+json';
-
-    private $defaultContentType;
+    /**
+     * @var string
+     */
+    private $responseContentType;
 
     /**
-     * @param string $defaultContentType
+     * @param string $responseContentType
      */
-    public function __construct(string $defaultContentType = null)
+    public function __construct(string $responseContentType)
     {
-        $this->defaultContentType = $defaultContentType ?? self::HEADER_APPLICATION_JSON_API;
+        $this->responseContentType = $responseContentType;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function modify(Response $response, Request $request = null): Response
+    public function modify(Response $response, Request $request): Response
     {
-        if (null === $request) {
-            return $response;
+        $acceptableContentTypes = $request->getAcceptableContentTypes();
+
+        foreach ($acceptableContentTypes as $contentType) {
+            if ($contentType === $this->responseContentType) {
+                $clone = clone $response;
+                $clone->headers->set('Content-Type', $contentType);
+
+                return $clone;
+            }
         }
 
-        $header = $request->headers->get('Content-Type');
-
-        $clone = clone $response;
-
-        switch ($header) {
-            case self::HEADER_APPLICATION_JSON_API:
-            case self::HEADER_APPLICATION_JSON:
-                $clone->headers->set('Content-Type', $header);
-                break;
-            default:
-                $clone->headers->set('Content-Type', $this->defaultContentType);
-                break;
-        }
-
-        return $clone;
+        return $response;
     }
 }

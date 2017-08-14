@@ -14,8 +14,9 @@ interface ResponseModifierInterface
 {
     /**
      * @param Response $response
-     * @param Request|null $request
+     * @param Request $request
+     *
      * @return Response
      */
-    public function modify(Response $response, Request $request = null): Response;
+    public function modify(Response $response, Request $request): Response;
 }
