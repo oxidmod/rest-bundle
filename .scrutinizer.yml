@@ -1,6 +1,10 @@
 checks:
     php: true
 
+tools:
+    php_sim: true
+    php_cpd: false
+
 filter:
     excluded_paths:
         - tests/*
