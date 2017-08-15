@@ -39,6 +39,8 @@ class RestBundleTest extends TestCase
                         $this->fail('Unexpected compiler pass.');
                 }
             });
+
+        $this->bundle->build($container);
     }
 
     protected function setUp()
