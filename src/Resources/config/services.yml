@@ -6,29 +6,39 @@ parameters:
 services:
     oxidmod_rest.manager:
         class: League\Fractal\Manager
+        public: false
         calls:
             - method: setSerializer
               arguments:
-                  - "@=service(parameter('oxidmod_rest.serializer'))"
+                  - '@oxidmod_rest.serializer'
+
+    oxidmod_rest.serializer:
+        alias: '%oxidmod_rest.serializer%'
+        public: true
 
     oxidmod_rest.transformer:
         class: Oxidmod\RestBundle\Transformer\Transformer
+        public: false
         arguments:
             - []
 
     oxidmod_rest.serializer.json_api:
         class: League\Fractal\Serializer\JsonApiSerializer
+        public: false
         arguments:
             - '%oxidmod_rest.json_api.base_url%'
 
     oxidmod_rest.serializer.array:
         class: League\Fractal\Serializer\ArraySerializer
+        public: false
 
     oxidmod_rest.serializer.data_array:
         class: League\Fractal\Serializer\DataArraySerializer
+        public: false
 
     oxidmod_rest.event_listener.kernel_request_listener:
         class: Oxidmod\RestBundle\EventListener\KernelRequestListener
+        public: false
         arguments:
             - '@oxidmod_rest.request_modifier'
         tags:
@@ -36,6 +46,7 @@ services:
 
     oxidmod_rest.event_listener.kernel_view_listener:
         class: Oxidmod\RestBundle\EventListener\KernelResponseListener
+        public: false
         arguments:
             - '@oxidmod_rest.response_modifier'
         tags:
@@ -43,21 +54,25 @@ services:
 
     oxidmod_rest.request_modifier:
         class: Oxidmod\RestBundle\Request\RequestModifier
+        public: false
         arguments:
             - []
 
     oxidmod_rest.request_modifier.json_request_modifier:
         class: Oxidmod\RestBundle\Request\Modifier\JsonRequestModifier
+        public: false
         tags:
             - { name: oxidmod_rest.request_modifier }
 
     oxidmod_rest.response_modifier:
         class: Oxidmod\RestBundle\Response\ResponseModifier
+        public: false
         arguments:
             - []
 
     oxidmod_rest.response_modifier.content_type:
         class: Oxidmod\RestBundle\Response\Modifier\ContentTypeModifier
+        public: false
         arguments:
             - '%oxidmod_rest.response_content_type%'
         tags:
@@ -65,6 +80,7 @@ services:
 
     oxidmod_rest.response_renderer:
         class: Oxidmod\RestBundle\Response\ResponseRenderer
+        public: false
         arguments:
             - '@oxidmod_rest.manager'
             - '@oxidmod_rest.transformer'

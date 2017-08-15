@@ -27,12 +27,4 @@ class RestExtension extends Extension
 
         $loader->load('services.yml');
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAlias()
-    {
-        return 'oxidmod_rest';
-    }
 }
