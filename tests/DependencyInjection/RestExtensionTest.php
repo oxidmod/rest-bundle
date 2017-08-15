@@ -4,36 +4,30 @@ declare (strict_types=1);
 
 namespace Oxidmod\RestBundle\Tests\DependencyInjection;
 
+use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
 use Oxidmod\RestBundle\DependencyInjection\RestExtension;
-use PHPUnit\Framework\TestCase;
-use Symfony\Component\DependencyInjection\Extension\Extension;
 
 /**
  * Test for RestExtension
  */
-class RestExtensionTest extends TestCase
+class RestExtensionTest extends AbstractExtensionTestCase
 {
     /**
-     * @var RestExtension
+     * {@inheritdoc}
      */
-    private $extension;
-
-    public function testGetAlias()
+    protected function getContainerExtensions()
     {
-        static::assertSame('oxidmod_rest', $this->extension->getAlias());
+        return [
+            new RestExtension(),
+        ];
     }
 
-    protected function assertPreConditions()
+    public function testExtensionLoaded()
     {
-        static::assertInstanceOf(Extension::class, $this->extension);
+        $this->load();
 
-        parent::assertPreConditions();
-    }
-
-    protected function setUp()
-    {
-        $this->extension = new RestExtension();
-
-        parent::setUp();
+        $this->assertContainerBuilderHasParameter('oxidmod_rest.json_api.base_url');
+        $this->assertContainerBuilderHasParameter('oxidmod_rest.serializer');
+        $this->assertContainerBuilderHasParameter('oxidmod_rest.response_content_type');
     }
 }

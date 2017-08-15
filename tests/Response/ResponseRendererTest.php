@@ -5,9 +5,7 @@ declare (strict_types=1);
 namespace Oxidmod\RestBundle\Tests\Response;
 
 use League\Fractal\Manager;
-use League\Fractal\Serializer\SerializerAbstract;
 use League\Fractal\TransformerAbstract;
-use Oxidmod\RestBundle\Response\ResponseModifier;
 use Oxidmod\RestBundle\Response\ResponseRenderer;
 use Oxidmod\RestBundle\Transformer\Exception\UnsupportedObjectException;
 use PHPUnit\Framework\TestCase;
@@ -23,8 +21,10 @@ class ResponseRendererTest extends TestCase
      */
     public function testTransformerException()
     {
-        $transformer = new class extends TransformerAbstract {
-            public function transform($data) {
+        $transformer = new class extends TransformerAbstract
+        {
+            public function transform($data)
+            {
                 throw new UnsupportedObjectException($data);
             }
         };
@@ -35,12 +35,26 @@ class ResponseRendererTest extends TestCase
     }
 
     /**
+     * @param TransformerAbstract $transformer
+     * @return ResponseRenderer
+     */
+    private function getRenderer($transformer): ResponseRenderer
+    {
+        return new ResponseRenderer(
+            new Manager(),
+            $transformer
+        );
+    }
+
+    /**
      * @expectedException \InvalidArgumentException
      */
     public function testResponseException()
     {
-        $transformer = new class extends TransformerAbstract {
-            public function transform($data) {
+        $transformer = new class extends TransformerAbstract
+        {
+            public function transform($data)
+            {
                 return [];
             }
         };
@@ -52,8 +66,10 @@ class ResponseRendererTest extends TestCase
 
     public function testResponseRenderResponseFromObject()
     {
-        $transformer = new class extends TransformerAbstract {
-            public function transform($data) {
+        $transformer = new class extends TransformerAbstract
+        {
+            public function transform($data)
+            {
                 return ['test' => 'val'];
             }
         };
@@ -70,8 +86,10 @@ class ResponseRendererTest extends TestCase
 
     public function testResponseRenderResponseFromArray()
     {
-        $transformer = new class extends TransformerAbstract {
-            public function transform($data) {
+        $transformer = new class extends TransformerAbstract
+        {
+            public function transform($data)
+            {
                 return ['test' => 'val'];
             }
         };
@@ -92,7 +110,9 @@ class ResponseRendererTest extends TestCase
 
     public function testResponseRenderResponseFromNull()
     {
-        $renderer = $this->getRenderer(new class extends TransformerAbstract {});
+        $renderer = $this->getRenderer(new class extends TransformerAbstract
+        {
+        });
 
         $expectedContent = json_encode([
             'data' => []
@@ -110,25 +130,5 @@ class ResponseRendererTest extends TestCase
             [['test' => 'val'], 200, new Response(json_encode(['data' => ['test' => 'val']]), 200)],
 
         ];
-    }
-
-    /**
-     * @param TransformerAbstract $transformer
-     * @return ResponseRenderer
-     */
-    private function getRenderer($transformer): ResponseRenderer
-    {
-        $responseModifier = $this->createMock(ResponseModifier::class);
-        $responseModifier->expects(static::any())
-            ->method('modifyResponse')
-            ->willReturnCallback(function (Response $response) {
-                return $response;
-            });
-
-        return new ResponseRenderer(
-            new Manager(),
-            $transformer,
-            $responseModifier
-        );
     }
 }

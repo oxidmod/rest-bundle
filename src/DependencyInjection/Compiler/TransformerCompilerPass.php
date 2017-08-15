@@ -32,15 +32,15 @@ class TransformerCompilerPass implements CompilerPassInterface
             return;
         }
 
-        $rootTransformerDefinition = $container->getDefinition(static::TRANSFORMER_SERVICE_ID);
+        $definition = $container->getDefinition(static::TRANSFORMER_SERVICE_ID);
 
-        $taggedServices = $container->findTaggedServiceIds(static::TRANSFORMER_SERVICE_TAG);
+        $transformers = array_keys($container->findTaggedServiceIds(static::TRANSFORMER_SERVICE_TAG));
 
-        $transformers = [];
-        foreach ($taggedServices as $id => $tags) {
-            $transformers[] = new Reference($id);
+        $transformersSet = [];
+        foreach ($transformers as $transformer) {
+            $transformersSet[] = new Reference($transformer);
         }
 
-        $rootTransformerDefinition->replaceArgument(0, $transformers);
+        $definition->replaceArgument(0, $transformersSet);
     }
 }

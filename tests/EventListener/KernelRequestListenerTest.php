@@ -7,7 +7,6 @@ namespace Oxidmod\RestBundle\Tests\EventListener;
 use Oxidmod\RestBundle\EventListener\KernelRequestListener;
 use Oxidmod\RestBundle\Request\RequestModifier;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
@@ -25,7 +24,7 @@ class KernelRequestListenerTest extends TestCase
     /**
      * @var KernelRequestListener
      */
-    private $subscriber;
+    private $listener;
 
     public function testOnKernelRequest()
     {
@@ -41,14 +40,14 @@ class KernelRequestListenerTest extends TestCase
             ->method('modifyRequest')
             ->with($request);
 
-        $this->subscriber->onKernelRequest($event);
+        $this->listener->onKernelRequest($event);
     }
 
     protected function setUp()
     {
         $this->requestModifier = $this->createMock(RequestModifier::class);
 
-        $this->subscriber = new KernelRequestListener($this->requestModifier);
+        $this->listener = new KernelRequestListener($this->requestModifier);
 
         parent::setUp();
     }

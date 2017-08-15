@@ -29,23 +29,15 @@ class ResponseRenderer
     private $transformer;
 
     /**
-     * @var ResponseModifier
-     */
-    private $responseModifier;
-
-    /**
      * @param Manager $fractalManager
      * @param TransformerAbstract $transformer
-     * @param ResponseModifier $responseModifier
      */
     public function __construct(
         Manager $fractalManager,
-        TransformerAbstract $transformer,
-        ResponseModifier $responseModifier
+        TransformerAbstract $transformer
     ) {
         $this->fractalManager = $fractalManager;
         $this->transformer = $transformer;
-        $this->responseModifier = $responseModifier;
     }
 
     /**
@@ -62,12 +54,10 @@ class ResponseRenderer
     {
         $resource = $this->createResource($data, $resourceKey);
 
-        $response = new Response(
+        return new Response(
             $this->fractalManager->createData($resource)->toJson(),
             $httpCode
         );
-
-        return $this->responseModifier->modifyResponse($response);
     }
 
     /**

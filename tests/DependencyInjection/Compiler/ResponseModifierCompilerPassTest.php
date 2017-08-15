@@ -12,7 +12,6 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Test for ResponseModifierCompilerPassTest
@@ -40,7 +39,6 @@ class ResponseModifierCompilerPassTest extends TestCase
         $container = new ContainerBuilder();
 
         $rootModifier = new Definition(ResponseModifier::class);
-        $rootModifier->addArgument($this->createMock(RequestStack::class));
         $rootModifier->addArgument([]);
 
         $container->setDefinition(ResponseModifierCompilerPass::MODIFIER_SERVICE_ID, $rootModifier);
@@ -50,13 +48,13 @@ class ResponseModifierCompilerPassTest extends TestCase
         $modifierDefinition->addTag(ResponseModifierCompilerPass::MODIFIER_SERVICE_TAG);
         $container->setDefinition($modifierId, $modifierDefinition);
 
-        static::assertEquals([], $rootModifier->getArgument(1));
+        static::assertEquals([], $rootModifier->getArgument(0));
 
         $this->compiler->process($container);
 
         static::assertEquals([
             new Reference($modifierId),
-        ], $rootModifier->getArgument(1));
+        ], $rootModifier->getArgument(0));
     }
 
     protected function setUp()
