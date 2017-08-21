@@ -7,10 +7,15 @@ php: [7, 7.1]
 before_script:
   - composer install
   - mkdir -p ./var
+  - wget https://github.com/infection/infection/releases/download/0.5.1/infection.phar
+  - wget https://github.com/infection/infection/releases/download/0.5.1/infection.phar.pubkey
+  - chmod +x infection.phar
+  - ./infection.phar self-update
 
 script:
   - composer run-script cover
   - composer run-script check-style
+  - ./infection.phar --min-msi=100 --min-covered-msi=100 --threads=4
 
 after_script:
   - composer coveralls
