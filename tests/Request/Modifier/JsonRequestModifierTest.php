@@ -7,6 +7,7 @@ namespace Oxidmod\RestBundle\Tests\Request\Modifier;
 use Oxidmod\RestBundle\Request\Modifier\JsonRequestModifier;
 use Oxidmod\RestBundle\Request\Modifier\RequestModifierInterface;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -19,24 +20,21 @@ class JsonRequestModifierTest extends TestCase
      */
     private $modifier;
 
-    /**
-     * @param Request $request
-     * @param array $expectedRequest
-     *
-     * @dataProvider providerForTestNotJsonRequest
-     */
-    public function testNotJsonRequest(Request $request, array $expectedRequest)
+    public function testNotJsonRequest()
     {
-        $this->modifier->modify($request);
+        $request = new Request([],[],[],[],[],['HTTP_CONTENT_TYPE' => 'multipart/form-data'], json_encode([]));
 
-        static::assertSame($expectedRequest, $request->request->all());
+        $request->request = $this->createMock(ParameterBag::class);
+        $request->request->expects(static::never())->method(static::anything());
+
+        $this->modifier->modify($request);
     }
 
     public function providerForTestNotJsonRequest(): array
     {
         return [
-            [new Request([],[],[],[],[],['HTTP_CONTENT_TYPE' => 'multipart/form-data']), []],
-            [new Request([],['test' => 'val'],[],[],[],['HTTP_CONTENT_TYPE' => 'multipart/form-data']), ['test' => 'val']],
+            [new Request([],[],[],[],[],['HTTP_CONTENT_TYPE' => 'multipart/form-data'], 'not a json content'), []],
+            [new Request([],['test' => 'val'],[],[],[],['HTTP_CONTENT_TYPE' => 'multipart/form-data'], 'not a json content'), ['test' => 'val']],
         ];
     }
 
@@ -86,8 +84,6 @@ class JsonRequestModifierTest extends TestCase
     public function providerForTestModify(): array
     {
         return [
-            ['application/json', json_encode('test'), ['test']],
-            ['application/vnd.api+json', json_encode('test'), ['test']],
             ['application/json', json_encode(['test']), ['test']],
             ['application/vnd.api+json', json_encode(['test']), ['test']],
             ['application/json', json_encode(['test' => 'val']), ['test' => 'val']],
