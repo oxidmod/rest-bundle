@@ -11,6 +11,7 @@ before_script:
 script:
   - composer run-script cover
   - composer run-script check-style
+  - composer run-script infection
 
 after_script:
   - composer coveralls
