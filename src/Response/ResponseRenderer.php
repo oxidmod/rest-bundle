@@ -68,14 +68,14 @@ class ResponseRenderer
      */
     private function createResource($data, string $resourceKey = null): ResourceInterface
     {
-        switch (true) {
-            case $data === null:
-                return new NullResource();
-            case is_array($data):
-            case $data instanceof \Traversable:
-                return new Collection($data, $this->transformer, $resourceKey);
-            default:
-                return new Item($data, $this->transformer, $resourceKey);
+        if (null === $data) {
+            return new NullResource();
         }
+
+        if (is_array($data) || $data instanceof \Traversable) {
+            return new Collection($data, $this->transformer, $resourceKey);
+        }
+
+        return new Item($data, $this->transformer, $resourceKey);
     }
 }
